@@ -4,7 +4,8 @@
 # Python standard library
 from __future__ import print_function
 from shutil import copytree
-import os, re, json, sys, subprocess
+import os, re, json, sys, subprocess, textwrap
+
 
 # Local imports
 from utils import (git_commit_hash,
@@ -12,7 +13,8 @@ from utils import (git_commit_hash,
     fatal,
     which,
     exists,
-    err)
+    err
+)
 
 from . import version as __version__
 
@@ -100,7 +102,7 @@ def sym_safe(input_data, target):
 
 
 def rename(filename):
-    """Dynamically renames FastQ file to have one of the following extensions: *.R1.fastq.gz, *.R2.fastq.gz
+    """Dynamically renames FastQ file to have one of the following extensions: .fastq.gz
     To automatically rename the fastq files, a few assumptions are made. If the extension of the
     FastQ file cannot be infered, an exception is raised telling the user to fix the filename
     of the fastq files.
@@ -112,20 +114,11 @@ def rename(filename):
     # Covers common extensions from SF, SRA, EBI, TCGA, and external sequencing providers
     # key = regex to match string and value = how it will be renamed
     extensions = {
-        # Matches: _R[12]_fastq.gz, _R[12].fastq.gz, _R[12]_fq.gz, etc.
-        ".R1.f(ast)?q.gz$": ".R1.fastq.gz",
-        ".R2.f(ast)?q.gz$": ".R2.fastq.gz",
-        # Matches: _R[12]_001_fastq_gz, _R[12].001.fastq.gz, _R[12]_001.fq.gz, etc.
-        # Capture lane information as named group
-        ".R1.(?P<lane>...).f(ast)?q.gz$": ".R1.fastq.gz",
-        ".R2.(?P<lane>...).f(ast)?q.gz$": ".R2.fastq.gz",
-        # Matches: _[12].fastq.gz, _[12].fq.gz, _[12]_fastq_gz, etc.
-        "_1.f(ast)?q.gz$": ".R1.fastq.gz",
-        "_2.f(ast)?q.gz$": ".R2.fastq.gz"
+        # Matches: _fastq.gz, .fastq.gz, _fq.gz, etc.
+        ".f(ast)?q.gz$": ".fastq.gz"
     }
 
-    if (filename.endswith('.R1.fastq.gz') or
-        filename.endswith('.R2.fastq.gz')):
+    if filename.endswith('.fastq.gz'):
         # Filename is already in the correct format
         return filename
 
@@ -139,16 +132,30 @@ def rename(filename):
             break # only rename once
 
     if not converted:
-        raise NameError("""\n\tFatal: Failed to rename provided input '{}'!
-        Cannot determine the extension of the user provided input file.
-        Please rename the file list above before trying again.
-        Here is example of acceptable input file extensions:
-          sampleName.R1.fastq.gz      sampleName.R2.fastq.gz
-          sampleName_R1_001.fastq.gz  sampleName_R2_001.fastq.gz
-          sampleName_1.fastq.gz       sampleName_2.fastq.gz
-        Please also check that your input files are gzipped?
-        If they are not, please gzip them before proceeding again.
-        """.format(filename, sys.argv[0])
+        fatal(
+            textwrap.dedent(
+                """
+                Fatal: Failed to rename provided input '{0}'!
+                Cannot determine the extension of the user provided input file.
+                Please rename the file listed above before trying again.
+
+                Here is example of acceptable input file extensions:
+                  sampleA_0.fastq.gz     sampleA_1.fastq.gz
+                  sampleA_2.fastq.gz     sampleA_3.fastq.gz
+                  sampleB_0.fastq.gz     sampleB_1.fastq.gz
+                  sampleC.fastq.gz       sampleD.fastq.gz
+                
+                The pipeline is setup to automatically demultiplex samples. 
+                In order for the pipeline to demultiplex samples sequenced across 
+                multiple barcodes, the sample must have the following extension:
+                '_[0-9].fastq.gz'. The number before the extension, "_N.fastq.gz",
+                indicates that the sample is multiplexed. Each of these samples
+                will be concatenated together to demultiplex the files.
+
+                Also, please also check that your input files are gzipped?
+                If they are not, please gzip them before proceeding again.
+                """.format(filename)
+            )
         )
 
     return filename
@@ -362,7 +369,7 @@ def mixed_inputs(ifiles):
     fastqs = False
     bams = False
     for file in ifiles:
-        if file.endswith('.R1.fastq.gz') or file.endswith('.R2.fastq.gz'):
+        if file.endswith('.fastq.gz'):
             fastqs = True 
             fq_files.append(file)
         elif file.endswith('.bam'):
@@ -371,21 +378,26 @@ def mixed_inputs(ifiles):
 
     if fastqs and bams:
         # User provided a mix of FastQs and BAMs
-        raise TypeError("""\n\tFatal: Detected a mixture of --input data types. 
-            A mixture of BAM and FastQ files were provided; however, the pipeline
-            does NOT support processing a mixture of input FastQ and BAM files.
-            Input FastQ Files:
-                {}
-            Input BAM Files:
-                {}        
-            Please do not run the pipeline with a mixture of FastQ and BAM files.
-            This feature is currently not supported within '{}', and it is not
-            recommended to process samples in this way either. If this is a priority
-            for your project, please run the set of FastQ and BAM files separately 
-            (in two separate output directories). If you feel like this functionality
-            should exist, feel free to open an issue on Github.
-            """.format(" ".join(fq_files), " ".join(bam_files), sys.argv[0])
+        fatal(
+            textwrap.dedent(
+                """
+                Fatal: Detected a mixture of --input data types (FastQs and BAMs).
+                A mixture of BAM and FastQ files were provided; however, the pipeline
+                does NOT support processing a mixture of input FastQ and BAM files.
+                Input FastQ Files:
+                    {0}
+                Input BAM Files:
+                    {1}        
+                Please do not run the pipeline with a mixture of FastQ and BAM files.
+                This feature is currently not supported within '{2}', and it is not
+                recommended to process samples in this way either. If this is a priority
+                for your project, please run the set of FastQ and BAM files separately 
+                (in two separate output directories). If you feel like this functionality
+                should exist, feel free to open an issue on Github.
+                """.format(" ".join(fq_files), " ".join(bam_files), sys.argv[0])
+            )
         )
+
 
 def add_user_information(config):
     """Adds username and user's home directory to config.
@@ -423,7 +435,6 @@ def add_sample_metadata(input_files, config, group=None):
     @return config <dict>:
         Updated config with basenames, labels, and groups (if provided)
     """
-    import re
 
     # TODO: Add functionality for basecase 
     # when user has samplesheet
@@ -431,7 +442,7 @@ def add_sample_metadata(input_files, config, group=None):
     config['samples'] = []
     for file in input_files:
         # Split sample name on file extension
-        sample = re.split('\.R[12]\.fastq\.gz', os.path.basename(file))[0]
+        sample = re.split('\.fastq\.gz', os.path.basename(file))[0]
         if sample not in added:
             # Only add PE sample information once
             added.append(sample)
@@ -455,14 +466,9 @@ def add_rawdata_information(sub_args, config, ifiles):
          Updated config dictionary containing user information (username and home directory)
     """
 
-    # Determine whether dataset is paired-end
-    # or single-end
-    # Updates config['project']['nends'] where
-    # 1 = single-end, 2 = paired-end, -1 = bams
-    convert = {1: 'single-end', 2: 'paired-end', -1: 'bam'}
-    nends = get_nends(ifiles)  # Checks PE data for both mates (R1 and R2)
-    config['project']['nends'] = nends
-    config['project']['filetype'] = convert[nends]
+    # Determine whether dataset is multiplexed
+    sample2barcodes = get_nends(ifiles)  # Samples that need to be concat
+    config['barcodes'] = sample2barcodes
 
     # Finds the set of rawdata directories to bind
     rawdata_paths = get_rawdata_bind_paths(input_files = sub_args.input)
@@ -512,70 +518,56 @@ def image_cache(sub_args, config, repo_path):
 
 
 def get_nends(ifiles):
-    """Determines whether the dataset is paired-end or single-end.
-    If paired-end data, checks to see if both mates (R1 and R2) are present for each sample.
-    If single-end, nends is set to 1. Else if paired-end, nends is set to 2.
+    """Determines whether a sample has multiple barcode files (which need to be cat later).
+    For a given sample, it results the samples basename and its list of barcode files.
     @params ifiles list[<str>]:
         List containing pipeline input files (renamed symlinks)
-    @return nends_status <int>:
-         Integer reflecting nends status: 1 = se, 2 = pe, -1 = bams
+    @return sample2barcodes dict[<str>] = list[<str>]:
+         Keys: basename of sample without barcode and fastq extension
+         Values: list of its barcode files
     """
-    # Determine if dataset contains paired-end data
-    paired_end = False
-    bam_files = False
-    nends_status = 1
+    sample2barcodes = {}
+
     for file in ifiles:
-        if file.endswith('.bam'):
-            bam_files = True
-            nends_status = -1
-            break
-        elif file.endswith('.R2.fastq.gz'):
-            paired_end = True
-            nends_status = 2
-            break # dataset is paired-end
+        bname = os.path.basename(file)
+        # Split sample name on file extension
+        sample = re.split('[._](?P<barcode>\d*)\.fastq\.gz', bname)[0]
+        if sample == bname:
+            # Did not strip extension, could be filename 
+            # with Illumina naming convention or a set of
+            # non-barcoded files (don't need to cat)
+            if (bname.rstrip('.fastq.gz').endswith('R1') or 
+            bname.rstrip('.fastq.gz').endswith('R2')):
+                # Provided FastQ file name looks suspiciously
+                # like an Illumina FastQ file extension:
+                # .R1.fastq.gz or .R2.fastq.gz
+                fatal(
+                    textwrap.dedent(
+                        """
+                        Fatal: The provided input file '{0}' does
+                        not follow expected naming convention for Nanopore data! 
+                        The file name that was provided looks suspusiously like an
+                        Illumina FastQ file. Please ensure you provided nanopore 
+                        data, and rename the input files like the examples below.
 
-    # Check to see if both mates (R1 and R2) 
-    # are present paired-end data
-    if paired_end:
-        nends = {} # keep count of R1 and R2 for each sample
-        for file in ifiles:
-            # Split sample name on file extension
-            sample = re.split('\.R[12]\.fastq\.gz', os.path.basename(file))[0]
-            if sample not in nends:
-                nends[sample] = 0
-
-            nends[sample] += 1
-
-        # Check if samples contain both read mates
-        missing_mates = [sample for sample, count in nends.items() if count == 1]
-        if missing_mates:
-            # Missing an R1 or R2 for a provided input sample
-            raise NameError("""\n\tFatal: Detected pair-end data but user failed to provide
-                both mates (R1 and R2) for the following samples:\n\t\t{}\n
-                Please check that the basename for each sample is consistent across mates.
-                Here is an example of a consistent basename across mates:
-                  consistent_basename.R1.fastq.gz
-                  consistent_basename.R2.fastq.gz
-
-                Please do not run the pipeline with a mixture of single-end and paired-end
-                samples. This feature is currently not supported within {}, and it is
-                not recommended either. If this is a priority for your project, please run
-                paired-end samples and single-end samples separately (in two separate output 
-                directories). If you feel like this functionality should exist, feel free to 
-                open an issue on Github.
-                """.format(missing_mates, sys.argv[0])
-            )
-    elif not bam_files:
-        # Provided only single-end data
-        # not supported or recommended
-        raise TypeError("""\n\tFatal: Single-end data detected.
-            {} does not support single-end data. Calling variants from single-end
-            data is not recommended either. If you feel like this functionality should 
-            exist, feel free to open an issue on Github.
-            """.format(sys.argv[0])
-        )
-
-    return nends_status
+                        Here is example of acceptable input file extensions:
+                            sampleA_0.fastq.gz     sampleA_1.fastq.gz
+                            sampleA_2.fastq.gz     sampleA_3.fastq.gz
+                            sampleB_0.fastq.gz     sampleB_1.fastq.gz
+                            sampleC.fastq.gz       sampleD.fastq.gz
+                        """.format(bname)
+                    )
+                )
+            else:
+                sample2barcodes[bname.rstrip('.fastq.gz')] = {}
+        else:
+            sample, barcode, _ = re.split('[._](?P<barcode>\d*)\.fastq\.gz', bname)
+            if sample not in sample2barcodes:
+                sample2barcodes[sample] = {}
+            
+            sample2barcodes[sample][int(barcode)] = bname
+    
+    return sample2barcodes
 
 
 def get_rawdata_bind_paths(input_files):

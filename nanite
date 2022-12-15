@@ -27,7 +27,7 @@ in any work or product based on this material.
 USAGE:
   $ nanite <command> [OPTIONS]
 EXAMPLE:
-  $ nanite run --input *.R?.fastq.gz --output output/
+  $ nanite run --input *.fastq.gz --output output/
 """
 
 # Python standard library
