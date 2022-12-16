@@ -1,11 +1,6 @@
 # Python standard library
 from os.path import join
-from os import listdir
 import os, sys
-
-# 3rd party imports from pypi
-from snakemake.workflow import workflow as wf_api
-from snakemake.utils import R
 
 # Local imports
 from scripts.common import (
@@ -15,12 +10,36 @@ from scripts.common import (
     str_bool
 )
 
+# Global workflow variables
+configfile: 'config.json'                      # Generated from user input and config/*.json
+workpath = config['project']['workpath']       # Pipeline's output directory
+tmpdir   = config['options']['tmp_dir']        # Temporary directory
+samples2barcodes = config['barcodes']          # Samples to demultiplex, `cat` together
+# Find list of sample which 
+# have mulitple barcodes, this 
+# means they need to be merged  
+barcoded_samples = [k for k in samples2barcodes if samples2barcodes[k]]
+samples = list(config['barcodes'].keys())
 
-# Final ouput files of the pipeline
+
+# Final output files of the pipeline,
+# Rule DAG built from listed here 
 rule all:
     input:
-        []
+        # Merge samples with multiple barcodes,
+        # @imported from `rule setup` in rules/trim.smk 
+        expand(
+            join(workpath, "fastqs", "{name}.fastq.gz"), 
+            name=samples
+        ),
+        # Base-calling quality filtering,
+        # @imported from `rule nanofilt` in rules/trim.smk 
+        expand(
+            join(workpath,"fastqs","{name}.filtered.fastq.gz"),
+            name=samples
+        ),
 
 
 # Import rules 
 include: join("rules", "common.smk")
+include: join("rules", "trim.smk")
