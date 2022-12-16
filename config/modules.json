@@ -2,6 +2,6 @@
     "modules": {
     },
     "conda":{
-        "nanofilt": "envs/qc.smk"
+        "nanofilt": "envs/nanite.yaml"
     }
 }
