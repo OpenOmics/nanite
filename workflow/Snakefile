@@ -38,8 +38,21 @@ rule all:
             join(workpath,"fastqs","{name}.filtered.fastq.gz"),
             name=samples
         ),
-
+        # Align against entire NCBI viral database,
+        # @import from `rule minimap2` in rules/map.smk
+        expand(
+            join(workpath, "bams", "{name}.sam"),
+            name=samples
+        ),
+        # Create Krona report,
+        # @import from `rule kronatools` in rules/report.smk
+        expand(
+            join(workpath, "reports", "{name}_classification.html"),
+            name=samples
+        )
 
 # Import rules 
 include: join("rules", "common.smk")
 include: join("rules", "trim.smk")
+include: join("rules", "map.smk")
+include: join("rules", "report.smk")
