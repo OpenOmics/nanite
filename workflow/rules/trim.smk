@@ -49,7 +49,7 @@ rule setup:
         suffix = lambda w: ">" 
             if samples2barcodes[w.name] 
             else "",
-    conda: config['conda']['nanofilt']
+    conda: config['conda']['nanite']
     shell: 
         """
         {params.prefix} {input.fq} {params.suffix} {output.fq}
@@ -70,7 +70,7 @@ rule nanofilt:
         flt = join(workpath, "fastqs", "{name}.filtered.fastq.gz"),
     params:
         rname='nanofilt',
-    conda: config['conda']['nanofilt']
+    conda: config['conda']['nanite']
     shell: 
         """
         # Nanofilt requires uncompressed input

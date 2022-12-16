@@ -1,4 +1,6 @@
 {
     "references": {
+        "ncbi_viral_fa": "/data/OpenOmics/references/nanite/NCBI/viral_genomes_taxid.fa",
+        "kronatools": "/data/OpenOmics/references/nanite/kronatax_1222/"
     }
 }
