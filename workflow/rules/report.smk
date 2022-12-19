@@ -15,7 +15,7 @@ rule kronatools:
     params:
         rname  = 'kronatools',
         krona_ref  = config['references']['kronatools'],
-    conda: config['conda']['nanite']
+    conda: join(workpath, config['conda']['nanite'])
     shell: 
         """
         # Create Krona Taxonomy file 

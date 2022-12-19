@@ -14,7 +14,7 @@ rule minimap2:
     params:
         rname  = 'minimap2',
         viral_fa  = config['references']['ncbi_viral_fa'],
-    conda: config['conda']['nanite']
+    conda: join(workpath, config['conda']['nanite'])
     shell: 
         """
         # Align against entire NCBI Viral database 

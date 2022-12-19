@@ -223,6 +223,7 @@ function submit(){
 set -euo pipefail
 # Main process of pipeline
 snakemake --latency-wait 120 -s "$3/workflow/Snakefile" -d "$3" \\
+  --use-conda \\
   --use-singularity --singularity-args "'-B $4'" \\
   --use-envmodules --configfile="$3/config.json" \\
   --printshellcmds --cluster-config "$3/config/cluster.json" \\
