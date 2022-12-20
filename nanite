@@ -243,6 +243,7 @@ def parsed_arguments(name, description):
                 [--dry-run] [--job-name JOB_NAME] [--mode {{slurm,local}}] \\
                 [--sif-cache SIF_CACHE] [--singularity-cache SINGULARITY_CACHE] \\
                 [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] \\
+                [--quality-filter QUALITY_FILTER] \\
                 --input INPUT [INPUT ...] \\
                 --output OUTPUT
 
@@ -270,7 +271,10 @@ def parsed_arguments(name, description):
                                   Example: --output /data/$USER/output
 
         {3}{4}Analysis options:{5}
-          ...coming soon!
+          --quality-filter QUALITY_FILTER
+                                Filter reads on a minimum average quality score. The 
+                                default average minimum quality filter is set to 8.
+                                  Example: --quality-filter 8
 
         {3}{4}Orchestration options:{5}
           --mode {{slurm,local}}  
@@ -400,6 +404,16 @@ def parsed_arguments(name, description):
         '--output',
         type = lambda option: os.path.abspath(os.path.expanduser(option)),
         required = True,
+        help = argparse.SUPPRESS
+    )
+
+    # Analysis Arguments
+    # Minimum average read quality filter 
+    subparser_run.add_argument(
+        '--quality-filter',
+        type = int,
+        required = False,
+        default = 8,
         help = argparse.SUPPRESS
     )
 

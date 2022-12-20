@@ -14,6 +14,7 @@ $ nanite run [--help] \
       [--tmp-dir TMP_DIR] [--silent] [--sif-cache SIF_CACHE] \ 
       [--singularity-cache SINGULARITY_CACHE] \
       [--dry-run] [--threads THREADS] \
+      [--quality-filter QUALITY_FILTER] \
       --input INPUT [INPUT ...] \
       --output OUTPUT
 ```
@@ -49,7 +50,14 @@ Each of the following arguments are required. Failure to provide a required argu
 
 Each of the following arguments are optional, and do not need to be provided. 
 
-...add non-required analysis options 
+  `--quality-filter QUALITY_FILTER`  
+> **Quality score filter.**  
+> *type: int*
+> *default: 8*
+> 
+> This option filters reads on a minimum average quality score. Any reads with an average minimum quality score less than this threshold will be removed. The default average minimum quality filter is set to 8.
+> 
+> ***Example:*** `--quality-filter 10`
 
 ### 2.3 Orchestration options
 
@@ -159,15 +167,15 @@ module load singularity snakemake
 
 # Step 2A.) Dry-run the pipeline
 ./nanite run --input .tests/*.R?.fastq.gz \
-                  --output /data/$USER/output \
-                  --mode slurm \
-                  --dry-run
+             --output /data/$USER/output \
+             --mode slurm \
+             --dry-run
 
 # Step 2B.) Run the nanite pipeline
 # The slurm mode will submit jobs to 
 # the cluster. It is recommended running 
 # the pipeline in this mode.
 ./nanite run --input .tests/*.R?.fastq.gz \
-                  --output /data/$USER/output \
-                  --mode slurm
+             --output /data/$USER/output \
+             --mode slurm
 ```

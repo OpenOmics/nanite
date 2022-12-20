@@ -70,12 +70,13 @@ rule nanofilt:
         flt = join(workpath, "{name}", "fastqs", "{name}.filtered.fastq.gz"),
     params:
         rname='nanofilt',
+        qual_filt=quality_filter,
     conda: join(workpath, config['conda']['nanite'])
     shell: 
         """
         # Nanofilt requires uncompressed input
         gunzip -c {input.fq} \\
-            | NanoFilt -q 8 \\
+            | NanoFilt -q {params.qual_filt} \\
             | gzip \\
         > {output.flt}
         """

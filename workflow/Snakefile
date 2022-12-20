@@ -20,7 +20,10 @@ samples2barcodes = config['barcodes']          # Samples to demultiplex, `cat` t
 # means they need to be merged  
 barcoded_samples = [k for k in samples2barcodes if samples2barcodes[k]]
 samples = list(config['barcodes'].keys())
-
+# Nanofilt read average quality score filter
+quality_filter = int(
+    config['options']['quality_filter']
+) # Default: 8
 
 # Final output files of the pipeline,
 # Rule DAG built from listed here 
