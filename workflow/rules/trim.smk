@@ -38,7 +38,7 @@ rule setup:
     input:
         fq=get_barcoded_fastqs,
     output:
-        fq=join(workpath, "fastqs", "{name}.fastq.gz"),
+        fq=join(workpath, "{name}", "fastqs", "{name}.fastq.gz"),
     params:
         rname ='merge',
          # Building to merge multiple files or 
@@ -65,9 +65,9 @@ rule nanofilt:
         Quality filtered FastQ file
     """
     input:
-        fq  = join(workpath, "fastqs", "{name}.fastq.gz"),
+        fq  = join(workpath, "{name}", "fastqs", "{name}.fastq.gz"),
     output:
-        flt = join(workpath, "fastqs", "{name}.filtered.fastq.gz"),
+        flt = join(workpath, "{name}", "fastqs", "{name}.filtered.fastq.gz"),
     params:
         rname='nanofilt',
     conda: join(workpath, config['conda']['nanite'])

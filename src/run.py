@@ -707,7 +707,7 @@ def runner(mode, outdir, alt_cache, logger, additional_bind_paths = None,
         # snakemake API call: https://snakemake.readthedocs.io/en/stable/api_reference/snakemake.html
         masterjob = subprocess.Popen([
                 'snakemake', '-pr', '--rerun-incomplete',
-                '--use-singularity',
+                '--use-conda', '--use-singularity',
                 '--singularity-args', "'-B {}'".format(bindpaths),
                 '--cores', str(threads),
                 '--configfile=config.json'

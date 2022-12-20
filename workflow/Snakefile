@@ -29,27 +29,28 @@ rule all:
         # Merge samples with multiple barcodes,
         # @imported from `rule setup` in rules/trim.smk 
         expand(
-            join(workpath, "fastqs", "{name}.fastq.gz"), 
+            join(workpath, "{name}", "fastqs", "{name}.fastq.gz"), 
             name=samples
         ),
         # Base-calling quality filtering,
         # @imported from `rule nanofilt` in rules/trim.smk 
         expand(
-            join(workpath,"fastqs","{name}.filtered.fastq.gz"),
+            join(workpath, "{name}", "fastqs", "{name}.filtered.fastq.gz"),
             name=samples
         ),
         # Align against entire NCBI viral database,
         # @import from `rule minimap2` in rules/map.smk
         expand(
-            join(workpath, "bams", "{name}.sam"),
+            join(workpath, "{name}", "bams", "{name}.sam"),
             name=samples
         ),
         # Create Krona report,
         # @import from `rule kronatools` in rules/report.smk
         expand(
-            join(workpath, "reports", "{name}_classification.html"),
+            join(workpath, "{name}", "reports", "{name}_classification.html"),
             name=samples
         )
+
 
 # Import rules 
 include: join("rules", "common.smk")

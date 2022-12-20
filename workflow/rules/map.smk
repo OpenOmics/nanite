@@ -8,9 +8,9 @@ rule minimap2:
         SAM file
     """
     input:
-        fq  = join(workpath, "fastqs", "{name}.filtered.fastq.gz"),
+        fq  = join(workpath, "{name}", "fastqs", "{name}.filtered.fastq.gz"),
     output:
-        sam = join(workpath, "bams", "{name}.sam"),
+        sam = join(workpath, "{name}", "bams", "{name}.sam"),
     params:
         rname  = 'minimap2',
         viral_fa  = config['references']['ncbi_viral_fa'],

@@ -8,10 +8,10 @@ rule kronatools:
         HTML Krona report
     """
     input:
-        sam = join(workpath, "bams", "{name}.sam"),
+        sam = join(workpath, "{name}", "bams", "{name}.sam"),
     output:
-        taxa = join(workpath, "reports", "{name}.krona"),
-        html = join(workpath, "reports", "{name}_classification.html"),
+        taxa = join(workpath, "{name}", "reports", "{name}.krona"),
+        html = join(workpath, "{name}", "reports", "{name}_classification.html"),
     params:
         rname  = 'kronatools',
         krona_ref  = config['references']['kronatools'],
