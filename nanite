@@ -179,8 +179,7 @@ def run(sub_args):
         if int(mjob.returncode) == 0:
             print('{} pipeline has successfully completed'.format(_name))
         else:
-            fatal('{} pipeline failed. Please see {} for more information.'.format(_name,
-                os.path.join(sub_args.output, 'logfiles', 'snakemake.log')))
+            fatal('{} pipeline failed. Please see error(s) above for more information.'.format(_name))
     elif sub_args.mode == 'slurm':
         jobid = open(os.path.join(sub_args.output, 'logfiles', 'mjobid.log')).read().strip()
         if not sub_args.silent:

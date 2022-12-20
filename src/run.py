@@ -707,11 +707,11 @@ def runner(mode, outdir, alt_cache, logger, additional_bind_paths = None,
         # snakemake API call: https://snakemake.readthedocs.io/en/stable/api_reference/snakemake.html
         masterjob = subprocess.Popen([
                 'snakemake', '-pr', '--rerun-incomplete',
-                '--use-conda', '--use-singularity',
+                '--nocolor', '--use-conda', '--use-singularity',
                 '--singularity-args', "'-B {}'".format(bindpaths),
                 '--cores', str(threads),
                 '--configfile=config.json'
-            ], cwd = outdir, stderr=subprocess.STDOUT, stdout=logger, env=my_env)
+            ], cwd = outdir, env=my_env)
 
     # Submitting jobs to cluster via SLURM's job scheduler
     elif mode == 'slurm':
