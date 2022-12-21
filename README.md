@@ -18,7 +18,8 @@ The **`./nanite`** pipeline is composed several inter-related sub commands to se
 
  * [<code>nanite <b>run</b></code>](https://openomics.github.io/nanite/usage/run/): Run the nanite pipeline with your input files.
  * [<code>nanite <b>unlock</b></code>](https://openomics.github.io/nanite/usage/unlock/): Unlocks a previous runs output directory.
- * [<code>nanite <b>cache</b></code>](https://openomics.github.io/nanite/usage/cache/): Cache remote resources locally, coming soon!
+ * [<code>nanite <b>install</b></code>](https://openomics.github.io/nanite/usage/install/): Download reference files locally.
+ * [<code>nanite <b>cache</b></code>](https://openomics.github.io/nanite/usage/cache/): Cache software containers locally.
 
 **nanite** is a streamlined viral metagenomics pipeline to assemble, annotate, and classify microorganisms in enviromental samples. It relies on technologies like [Singularity<sup>1</sup>](https://singularity.lbl.gov/) to maintain the highest-level of reproducibility. The pipeline consists of a series of data processing and quality-control steps orchestrated by [Snakemake<sup>2</sup>](https://snakemake.readthedocs.io/en/stable/), a flexible and scalable workflow management system, to submit jobs to a cluster.
 

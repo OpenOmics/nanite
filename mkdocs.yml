@@ -98,6 +98,7 @@ nav:
   - Commands: 
     - nanite run: usage/run.md
     - nanite unlock: usage/unlock.md
+    - nanite install: usage/install.md
     - nanite cache: usage/cache.md
   - FAQ:
     - General Questions: faq/questions.md

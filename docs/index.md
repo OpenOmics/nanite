@@ -29,11 +29,12 @@ The **`./nanite`** pipeline is composed several inter-related sub commands to se
 
  * [<code>nanite <b>run</b></code>](usage/run.md): Run the nanite pipeline with your input files.
  * [<code>nanite <b>unlock</b></code>](usage/unlock.md): Unlocks a previous runs output directory.
- * [<code>nanite <b>cache</b></code>](usage/cache.md): Cache remote resources locally, coming soon!
+ * [<code>nanite <b>install</b></code>](usage/install.md): Download reference files locally.
+ * [<code>nanite <b>cache</b></code>](usage/cache.md): Cache software containers locally. 
 
 **nanite** is a streamlined viral metagenomics pipeline to assemble, annotate, and classify microorganisms in enviromental samples. It relies on technologies like [Singularity<sup>1</sup>](https://singularity.lbl.gov/) to maintain the highest-level of reproducibility. The pipeline consists of a series of data processing and quality-control steps orchestrated by [Snakemake<sup>2</sup>](https://snakemake.readthedocs.io/en/stable/), a flexible and scalable workflow management system, to submit jobs to a cluster.
 
-The pipeline is compatible with data generated from [Nanopore sequencing technologies](https://nanoporetech.com/). As input, it accepts a set of gzipped FastQ files and can be run locally on a compute instance or on-premise using a cluster. A user can define the method or mode of execution. The pipeline can submit jobs to a cluster using a job scheduler like SLURM (more coming soon!). A hybrid approach ensures the pipeline is accessible to all users.
+The pipeline is compatible with data generated from [Oxford Nanopore sequencing Technologies](https://nanoporetech.com/). As input, it accepts a set of gzipped FastQ files and can be run locally on a compute instance or on-premise using a cluster. A user can define the method or mode of execution. The pipeline can submit jobs to a cluster using a job scheduler like SLURM (more coming soon!). A hybrid approach ensures the pipeline is accessible to all users.
 
 Before getting started, we highly recommend reading through the [usage](usage/run.md) section of each available sub command.
 

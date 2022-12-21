@@ -10,10 +10,10 @@ Setting up the nanite pipeline is fast and easy! In its most basic form, <code>n
 ## 2. Synopsis
 ```text
 $ nanite run [--help] \
-      [--mode {slurm,local}] [--job-name JOB_NAME] [--batch-id BATCH_ID] \
-      [--tmp-dir TMP_DIR] [--silent] [--sif-cache SIF_CACHE] \ 
-      [--singularity-cache SINGULARITY_CACHE] \
-      [--dry-run] [--threads THREADS] \
+      [--dry-run] [--job-name JOB_NAME] [--mode {slurm,local}] \
+      [--sif-cache SIF_CACHE] [--singularity-cache SINGULARITY_CACHE] \
+      [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] \
+      [--resource-bundle RESOURCE_BUNDLE] [--use-conda] \
       [--quality-filter QUALITY_FILTER] \
       --input INPUT [INPUT ...] \
       --output OUTPUT
@@ -144,6 +144,15 @@ Each of the following arguments are optional, and do not need to be provided.
 > Path on the file system for writing temporary output files. By default, the temporary directory is set to '/lscratch/$SLURM_JOBID' for backwards compatibility with the NIH's Biowulf cluster; however, if you are running the pipeline on another cluster, this option will need to be specified. Ideally, this path should point to a dedicated location on the filesystem for writing tmp files. On many systems, this location is set to somewhere in /scratch. If you need to inject a variable into this string that should NOT be expanded, please quote this options value in single quotes.
 > 
 > ***Example:*** `--tmp-dir /scratch/$USER/`
+
+---  
+  `--resource-bundle RESOURCE_BUNDLE`
+> **Path to a resource bundle downloaded with the install sub command.**  
+> *type: path*  
+>
+> The resource bundle contains the set of required reference files for processing any data. The path provided to this option will be the path to the `nanite` directory that was created when running the install sub command. Please see the install sub command for more information about downloading the pipeline's resource bundle.
+> 
+> ***Example:*** `--resource-bundle /data/$USER/refs/nanite`
 
 ---  
   `--use-conda`   
