@@ -202,3 +202,19 @@ def joint_option(prefix, valueslist):
         s += "{} {} ".format(prefix, v)
     s = s.rstrip()
     return s
+
+
+def depending(env, condition):
+    """
+    Determines if Singularity or Conda should be used for software dependencies.
+    If the conda or container directive in Snakemake are set to None, it will
+    not be used. This ensures that Conda or Singularity use are mutually exclusive.
+    """
+    if not condition:
+        # If condition is False, 
+        # returns None to prevent 
+        # rule from using both 
+        # Conda and Singularity 
+        env = None
+
+    return env

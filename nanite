@@ -46,7 +46,6 @@ from src.utils import (
     err,
     exists,
     fatal,
-    hashed,
     permissions,
     check_cache,
     require
@@ -191,14 +190,63 @@ def run(sub_args):
 
 
 def cache(sub_args):
-    """Caches remote resources or reference files stored on DockerHub and S3.
+    """Caches remote software containers stored on DockerHub.
     Local SIFs will be created from images defined in 'config/containers/images.json'.
-    @TODO: add option to cache other shared S3 resources (i.e. kraken db and fqscreen indices)
     @param sub_args <parser.parse_args() object>:
         Parsed arguments for unlock sub-command
     """
-    print(sub_args)
-    fatal('NotImplementedError... Comming Soon!')
+    # Check for dependencies
+    require(['singularity'], ['singularity'])
+    sif_cache = sub_args.sif_cache
+    # Get absolute PATH to templates in exome-seek git repo
+    repo_path = os.path.dirname(os.path.abspath(__file__))
+    images = os.path.join(repo_path, 'config','containers.json')
+
+    # Create image cache
+    if not exists(sif_cache):
+        # Pipeline output directory does not exist on filesystem
+        os.makedirs(sif_cache)
+    elif exists(sif_cache) and os.path.isfile(sif_cache):
+        # Provided Path for pipeline output directory exists as file
+        raise OSError("""\n\tFatal: Failed to create provided sif cache directory!
+        User provided --sif-cache PATH already exists on the filesystem as a file.
+        Please {} cache again with a different --sif-cache PATH.
+        """.format(_name)
+        )
+
+    # Check if local SIFs already exist on the filesystem
+    with open(images, 'r') as fh:
+        data = json.load(fh)
+
+    pull = []
+    for image, uri in data['images'].items():
+        sif = os.path.join(sif_cache, '{}.sif'.format(os.path.basename(uri).replace(':', '_')))
+        if not exists(sif):
+            # If local sif does not exist on in cache, print warning
+            # and default to pulling from URI in config/containers.json
+            print('Image will be pulled from "{}".'.format(uri), file=sys.stderr)
+            pull.append(uri)
+
+    if not pull:
+        # Nothing to do!
+        print('Singularity image cache is already up to update!')
+    else:
+        # There are image(s) that need to be pulled 
+        if not sub_args.dry_run:
+            # container cache script: src/cache.sh
+            # Quote user provided values to avoid shell injections
+            username = os.environ.get('USER', os.environ.get('USERNAME'))
+            exitcode = bash(
+                str(os.path.join(repo_path, 'src', 'cache.sh')) + 
+                ' local ' +
+                " -s '{}' ".format(sif_cache) +
+                " -i '{}' ".format(','.join(pull)) + 
+                " -t '{0}/{1}/.singularity/' ".format(sif_cache, username)
+            )
+            # Check exitcode of caching script 
+            if exitcode != 0:
+                fatal('Fatal: Failed to pull all containers. Please try again!')
+            print('Done: sucessfully pulled all software containers!')
 
  
 def parsed_arguments(name, description):
@@ -242,7 +290,7 @@ def parsed_arguments(name, description):
           $ {2} run [--help] \\
                 [--dry-run] [--job-name JOB_NAME] [--mode {{slurm,local}}] \\
                 [--sif-cache SIF_CACHE] [--singularity-cache SINGULARITY_CACHE] \\
-                [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] \\
+                [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] [--use-conda] \\
                 [--quality-filter QUALITY_FILTER] \\
                 --input INPUT [INPUT ...] \\
                 --output OUTPUT
@@ -344,6 +392,14 @@ def parsed_arguments(name, description):
                                 recommended setting this vaule to the maximum number 
                                 of CPUs available on the host machine, default: 2.
                                   Example: --threads: 16
+          --use-conda             
+                                Use Conda/Mamba instead of Singularity. By default, 
+                                the pipeline uses singularity for handling required 
+                                software dependencies. This option overrides that be-
+                                havior, and it will use Conda or mamba instead. Please
+                                note that conda or mamba must be in your $PATH prior 
+                                to running the pipeline.
+                                  Example: --use-conda
         
         {3}{4}Misc Options:{5}
           -h, --help            Show usage information, help message, and exit.
@@ -361,17 +417,17 @@ def parsed_arguments(name, description):
 
           # Step 2A.) Dry-run the pipeline
           ./{0} run --input .tests/*.R?.fastq.gz \\
-                         --output /data/$USER/output \\
-                         --mode slurm \\
-                         --dry-run
+                    --output /data/$USER/output \\
+                    --mode slurm \\
+                    --dry-run
 
           # Step 2B.) Run the {0} pipeline
           # The slurm mode will submit jobs to 
           # the cluster. It is recommended running 
           # the pipeline in this mode.
           ./{0} run --input .tests/*.R?.fastq.gz \\
-                         --output /data/$USER/output \\
-                         --mode slurm
+                    --output /data/$USER/output \\
+                    --mode slurm
 
         {2}{3}Version:{4}
           {1}
@@ -510,6 +566,15 @@ def parsed_arguments(name, description):
         default = 2,
         help = argparse.SUPPRESS
     )
+
+    # Use Conda instead of singularity
+    subparser_run.add_argument(
+        '--use-conda',
+        action = 'store_true',
+        required = False,
+        default = False,
+        help = argparse.SUPPRESS
+    )
     
     # Sub-parser for the "unlock" sub-command
     # Grouped sub-parser arguments are currently 
@@ -594,59 +659,63 @@ def parsed_arguments(name, description):
     required_cache_options = textwrap.dedent("""\
         {0}: {1}
 
-        {3}{4}Synopsis:{5} 
-          $ {2} cache [-h] [--dry-run] --sif-cache SIF_CACHE
-
+        {3}Synopsis:{4} Cache software containers locally.
+          $ {2} cache [-h] [--dry-run] \\
+                  --sif-cache SIF_CACHE
+        
         Optional arguments are shown in square brackets above.
 
-        {3}{4}Description:{5}
-          Creates a local cache resources hosted on DockerHub or AWS S3.
-        These resources are normally pulled onto the filesystem when the
-        pipeline runs; however, due to network issues or DockerHub pull
-        rate limits, it may make sense to pull the resources once so a
-        shared cache can be created. It is worth noting that a singularity
-        cache cannot normally be shared across users. Singularity strictly
+        {3}Description:{4}
+           Create a local cache of software containers on DockerHub.
+        These containers are normally pulled when the pipeline runs; 
+        however, due to network issues or DockerHub pull rate limits, 
+        it may make sense to pull the resources once so a shared cache 
+        can be created. It is worth noting that a singularity cache 
+        cannot normally be shared across users. Singularity strictly
         enforces that a cache is owned by the user. To get around this
-        issue, the cache subcommand can be used to create local SIFs on
-        the filesystem from images on DockerHub.
+        issue, the cache subcommand can be used to create local SIFs 
+        on the filesystem from images on DockerHub.
 
-        {3}{4}Required arguments:{5}
+        {3}Required arguments:{4}
           --sif-cache SIF_CACHE
                                 Path where a local cache of SIFs will be 
                                 stored. Images defined in containers.json
                                 will be pulled into the local filesystem. 
                                 The path provided to this option can be 
                                 passed to the --sif-cache option of the
-                                run sub command. Please see {2} 
-                                run sub command for more information.
+                                run sub command. Please see {2} run 
+                                sub command for more information.
                                   Example: --sif-cache /data/$USER/cache
-        
-        {3}{4}Orchestration options:{5}
+
+        {3}Orchestration options:{4}
           --dry-run             Does not execute anything. Only displays 
                                 what remote resources would be pulled.
                                   Example: --dry-run
-    
-        {3}{4}Misc Options:{5}
+
+        {3}Misc Options:{4}
           -h, --help            Show usage information, help message, 
                                 and exits.
                                   Example: --help
-    
-        """.format(styled_name, description, name, c.bold, c.url, c.end))
+        """.format(styled_name, description, name, c.bold, c.end))
 
     # Display example usage in epilog
     cache_epilog = textwrap.dedent("""\
-        {2}{3}Example:{4}
-          # Cache remote resources of pipeline
-          {0} cache --sif-cache /data/$USER/cache
-    
-        {2}{3}Version:{4}
-          {1}
-        """.format(name, __version__, c.bold, c.url, c.end))
+        {2}Example:{3}
+          # See what software containers
+          # will be cached locally 
+          {0} cache --dry-run --sif-cache /data/$USER/cache
 
-    # Supressing help message of required args to overcome no sub-parser named groups
+          # Cache software containers
+          {0} cache --sif-cache /data/$USER/cache
+        {2}Version:{3}
+          {1}
+        """.format(name, __version__, c.bold, c.end))
+
+    # Supressing help message of required args 
+    # to overcome no sub-parser named groups
     subparser_cache = subparsers.add_parser(
         'cache',
-        help = 'Cache remote resources locally.',
+        help = 'Cache software containers locally.',
         usage = argparse.SUPPRESS,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = required_cache_options,

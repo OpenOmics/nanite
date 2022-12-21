@@ -135,7 +135,6 @@ Each of the following arguments are optional, and do not need to be provided.
 > 
 > ***Example:*** `--threads 12`
 
-
 ---  
   `--tmp-dir TMP_DIR`   
 > **Max number of threads for each process.**  
@@ -145,6 +144,15 @@ Each of the following arguments are optional, and do not need to be provided.
 > Path on the file system for writing temporary output files. By default, the temporary directory is set to '/lscratch/$SLURM_JOBID' for backwards compatibility with the NIH's Biowulf cluster; however, if you are running the pipeline on another cluster, this option will need to be specified. Ideally, this path should point to a dedicated location on the filesystem for writing tmp files. On many systems, this location is set to somewhere in /scratch. If you need to inject a variable into this string that should NOT be expanded, please quote this options value in single quotes.
 > 
 > ***Example:*** `--tmp-dir /scratch/$USER/`
+
+---  
+  `--use-conda`   
+> **Use Conda/mamba instead of Singularity.**  
+> *type: boolean flag*
+> 
+> Use Conda/Mamba instead of Singularity. By default, the pipeline uses singularity for handling required software dependencies. This option overrides that behavior, and it will use Conda or mamba instead of Singularity. The use of Singuarity and Conda are mutually exclusive. Please note that conda or mamba must be in your $PATH prior to running the pipeline.
+> 
+> ***Example:*** `--use-conda`
 
 ### 2.4 Miscellaneous options  
 Each of the following arguments are optional, and do not need to be provided. 

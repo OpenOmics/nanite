@@ -49,7 +49,8 @@ rule setup:
         suffix = lambda w: ">" 
             if samples2barcodes[w.name] 
             else "",
-    conda: join(workpath, config['conda']['nanite'])
+    conda: depending(join(workpath, config['conda']['nanite']), use_conda)
+    container: depending(config['images']['nanite'], use_singularity)
     shell: 
         """
         {params.prefix} {input.fq} {params.suffix} {output.fq}
@@ -71,7 +72,8 @@ rule nanofilt:
     params:
         rname='nanofilt',
         qual_filt=quality_filter,
-    conda: join(workpath, config['conda']['nanite'])
+    conda: depending(join(workpath, config['conda']['nanite']), use_conda)
+    container: depending(config['images']['nanite'], use_singularity)
     shell: 
         """
         # Nanofilt requires uncompressed input

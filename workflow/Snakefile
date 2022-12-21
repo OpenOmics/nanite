@@ -7,7 +7,8 @@ from scripts.common import (
     allocated,
     provided, 
     references,
-    str_bool
+    str_bool,
+    depending
 )
 
 # Global workflow variables
@@ -15,6 +16,7 @@ configfile: 'config.json'                      # Generated from user input and c
 workpath = config['project']['workpath']       # Pipeline's output directory
 tmpdir   = config['options']['tmp_dir']        # Temporary directory
 samples2barcodes = config['barcodes']          # Samples to demultiplex, `cat` together
+
 # Find list of sample which 
 # have mulitple barcodes, this 
 # means they need to be merged  
@@ -24,6 +26,19 @@ samples = list(config['barcodes'].keys())
 quality_filter = int(
     config['options']['quality_filter']
 ) # Default: 8
+
+# Determines if Conda or Singularity
+# are used for software dependencies
+use_singularity = True
+use_conda =  str_bool(
+     config['options']['use_conda']
+) # default: False
+# Use Singularity
+if use_conda:
+    # Conda and Singularity 
+    # are mutually exclusive 
+    use_singularity = False
+
 
 # Final output files of the pipeline,
 # Rule DAG built from listed here 
