@@ -1,0 +1,17 @@
+{
+    "install": {
+        "resource_bundle": {
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-01": "2361f2ecba31d20f9dcb673329a6adb4",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-02": "3e647111f7f2e890b7fcaace160470d3",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-03": "a26d70740faa84b7fac878a24b19179e",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-04": "f4d73747f8a0fba8eebc9a9e229983fd",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-05": "d83258a3806b01ef5599223971bacc60",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-06": "3b279af91d4826efbca0b7a4d0444ec5",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-07": "80fdf4ebb00103858354aa92b9f10c6d",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-08": "d8e017f9644330faa0d6ff81b43fe866",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-09": "d10afd5cdfe87804d3866d89bd439000",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-10": "cb0709a8978845738a3b82b97c051161",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-11": "47d0249931077f4f9534c1e37777dae0"
+        }
+    }
+}
