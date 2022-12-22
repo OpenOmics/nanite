@@ -4,7 +4,7 @@
   
   **_Viral Nanopore Pipeline_**
 
-  [![tests](https://github.com/OpenOmics/nanite/workflows/tests/badge.svg)](https://github.com/OpenOmics/nanite/actions/workflows/main.yaml) [![docs](https://github.com/OpenOmics/nanite/workflows/docs/badge.svg)](https://github.com/OpenOmics/nanite/actions/workflows/docs.yml) [![GitHub issues](https://img.shields.io/github/issues/OpenOmics/nanite?color=brightgreen)](https://github.com/OpenOmics/nanite/issues)  [![GitHub license](https://img.shields.io/github/license/OpenOmics/nanite)](https://github.com/OpenOmics/nanite/blob/main/LICENSE) 
+  [![Docker Pulls](https://img.shields.io/docker/pulls/skchronicles/nanite)](https://hub.docker.com/repository/docker/skchronicles/nanite) [![tests](https://github.com/OpenOmics/nanite/workflows/tests/badge.svg)](https://github.com/OpenOmics/nanite/actions/workflows/main.yaml) [![docs](https://github.com/OpenOmics/nanite/workflows/docs/badge.svg)](https://github.com/OpenOmics/nanite/actions/workflows/docs.yml) [![GitHub issues](https://img.shields.io/github/issues/OpenOmics/nanite?color=brightgreen)](https://github.com/OpenOmics/nanite/issues)  [![GitHub license](https://img.shields.io/github/license/OpenOmics/nanite)](https://github.com/OpenOmics/nanite/blob/main/LICENSE) 
   
   <i>
     This is the home of the pipeline, nanite. Its long-term goals: to assemble, annotate, and screen nanopore samples like no pipeline before!
