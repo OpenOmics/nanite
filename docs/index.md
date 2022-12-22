@@ -3,6 +3,9 @@
   <h1 style="font-size: 250%">nanite 🔬</h1>
 
   <b><i>Viral Nanopore Pipeline</i></b><br> 
+  <a href="https://hub.docker.com/repository/docker/skchronicles/nanite">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/skchronicles/nanite">
+  </a>
   <a href="https://github.com/OpenOmics/nanite/actions/workflows/main.yaml">
     <img alt="tests" src="https://github.com/OpenOmics/nanite/workflows/tests/badge.svg">
   </a>
