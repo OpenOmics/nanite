@@ -385,12 +385,11 @@ def parsed_arguments(name, description):
 
         {3}{4}Required arguments:{5}
           --input INPUT [INPUT ...]
-                                Input FastQ file(s) to process. The pipeline does NOT
-                                support single-end data. FastQ files for one or more  
-                                samples can be provided. Multiple input FastQ files
-                                should be seperated by a space. Globbing for multiple
-                                file is also supported.
-                                  Example: --input .tests/*.R?.fastq.gz
+                                Input Oxford Nanopore FastQ file(s) to process. One 
+                                or more FastQ files can be provided. Multiple input 
+                                FastQ files should be seperated by a space. Globbing 
+                                for multiple files is also supported.
+                                  Example: --input .tests/*.fastq.gz
           --output OUTPUT
                                 Path to an output directory. This location is where
                                 the pipeline will create all of its output files, also
@@ -505,7 +504,7 @@ def parsed_arguments(name, description):
           module load singularity snakemake
 
           # Step 2A.) Dry-run the pipeline
-          ./{0} run --input .tests/*.R?.fastq.gz \\
+          ./{0} run --input .tests/*.fastq.gz \\
                     --output /data/$USER/output \\
                     --mode slurm \\
                     --dry-run
@@ -514,7 +513,7 @@ def parsed_arguments(name, description):
           # The slurm mode will submit jobs to 
           # the cluster. It is recommended running 
           # the pipeline in this mode.
-          ./{0} run --input .tests/*.R?.fastq.gz \\
+          ./{0} run --input .tests/*.fastq.gz \\
                     --output /data/$USER/output \\
                     --mode slurm
 

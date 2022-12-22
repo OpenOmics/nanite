@@ -30,12 +30,12 @@ Use you can always use the `-h` option for information on a specific command.
 Each of the following arguments are required. Failure to provide a required argument will result in a non-zero exit-code.
 
   `--input INPUT [INPUT ...]`  
-> **Input FastQ or BAM file(s).**  
+> **Input Oxford Nanopore FastQ files(s).**  
 > *type: file(s)*  
 > 
-> One or more FastQ files can be provided. The pipeline does NOT support single-end data. From the command-line, each input file should seperated by a space. Globbing is supported! This makes selecting FastQ files easy. Input FastQ files should always be gzipp-ed.
+> One or more FastQ files can be provided. From the command-line, each input file should seperated by a space. Globbing is supported! This makes selecting FastQ files easy. Input FastQ files should always be gzipp-ed. If a sample has multiple fastq files for different barcodes, the pipeline expects each barcoded FastQ file endwith the following extension: `_N.fastq.gz`, where `N` is a number. Internally, the pipeline will concatenate each of these FastQ files prior to processing the data. Here is an example of an input sample with multiple barcode sequences: `S1_0.fastq.gz`, `S1_1.fastq.gz`, `S1_2.fastq.gz`, `S1_3.fastq.gz`. Given this barcoded sample, the pipeline will create the following concatenated FastQ file: `S1.fastq.gz`. 
 > 
-> ***Example:*** `--input .tests/*.R?.fastq.gz`
+> ***Example:*** `--input .tests/*.fastq.gz`
 
 ---  
   `--output OUTPUT`
@@ -183,7 +183,7 @@ module purge
 module load singularity snakemake
 
 # Step 2A.) Dry-run the pipeline
-./nanite run --input .tests/*.R?.fastq.gz \
+./nanite run --input .tests/*.fastq.gz \
              --output /data/$USER/output \
              --mode slurm \
              --dry-run
@@ -192,7 +192,7 @@ module load singularity snakemake
 # The slurm mode will submit jobs to 
 # the cluster. It is recommended running 
 # the pipeline in this mode.
-./nanite run --input .tests/*.R?.fastq.gz \
+./nanite run --input .tests/*.fastq.gz \
              --output /data/$USER/output \
              --mode slurm
 ```
