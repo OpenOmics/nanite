@@ -3,9 +3,15 @@
   <h1 style="font-size: 250%">nanite 🔬</h1>
 
   <b><i>Viral Nanopore Pipeline</i></b><br> 
+  <a href="https://doi.org/10.5281/zenodo.7477631">
+      <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7477631.svg" alt="DOI">
+  </a>
+  <a href="https://github.com/OpenOmics/nanite/releases">
+    <img alt="GitHub release" src="https://img.shields.io/github/v/release/OpenOmics/nanite?color=blue&include_prereleases">
+  </a>
   <a href="https://hub.docker.com/repository/docker/skchronicles/nanite">
     <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/skchronicles/nanite">
-  </a>
+  </a><br>
   <a href="https://github.com/OpenOmics/nanite/actions/workflows/main.yaml">
     <img alt="tests" src="https://github.com/OpenOmics/nanite/workflows/tests/badge.svg">
   </a>
@@ -46,6 +52,33 @@ For more information about issues or trouble-shooting a problem, please checkout
 ## Contribute 
 
 This site is a living document, created for and by members like you. nanite is maintained by the members of NCBR and is improved by continous feedback! We encourage you to contribute new content and make improvements to existing content via pull request to our [GitHub repository :octicons-heart-fill-24:{ .heart }](https://github.com/OpenOmics/nanite).
+
+
+## Citation
+
+If you use this software, please cite it as below:  
+
+=== "BibTex"
+
+    ```
+    @software{Kuhn_OpenOmics_nanite_2022,
+      author = {Skyler Kuhn and Paul Schaughency},
+      doi    = {10.5281/zenodo.7477631},
+      title  = {OpenOmics/nanite},
+      month  = dec,
+      year   = 2022,
+      url    = {https://github.com/OpenOmics/nanite/}
+    }
+    ```
+
+=== "APA"
+
+    ```
+    Skyler Kuhn, & Paul Schaughency. (2022). OpenOmics/nanite [Computer software]. https://doi.org/10.5281/zenodo.7477631
+    ```
+
+For more citation style options, please visit the pipeline's [Zenodo page](https://doi.org/10.5281/zenodo.7477631).
+
 
 ## References
 <sup>**1.**  Kurtzer GM, Sochat V, Bauer MW (2017). Singularity: Scientific containers for mobility of compute. PLoS ONE 12(5): e0177459.</sup>  
