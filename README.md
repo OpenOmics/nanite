@@ -51,6 +51,37 @@ module load snakemake singularity
 ## Contribute 
 This site is a living document, created for and by members like you. nanite is maintained by the members of OpenOmics and is improved by continous feedback! We encourage you to contribute new content and make improvements to existing content via pull request to our [GitHub repository](https://github.com/OpenOmics/nanite).
 
+## Cite
+
+If you use this software, please cite it as below:  
+
+<details>
+  <summary><b><i>@BibText</i></b></summary>
+ 
+```text
+@software{Kuhn_OpenOmics_nanite_2022,
+  author = {Skyler Kuhn and Paul Schaughency},
+  doi    = {10.5281/zenodo.7477631},
+  title  = {OpenOmics/nanite},
+  month  = dec,
+  year   = 2022,
+  url    = {https://github.com/OpenOmics/nanite/}
+}
+```
+
+</details>
+
+<details>
+  <summary><b><i>@APA</i></b></summary>
+
+```text
+Skyler Kuhn, & Paul Schaughency. (2022). OpenOmics/nanite [Computer software]. https://doi.org/10.5281/zenodo.7477631
+```
+
+</details>
+
+For more citation style options, please visit the pipeline's [Zenodo page](https://doi.org/10.5281/zenodo.7477631).
+
 ## References
 <sup>**1.**  Kurtzer GM, Sochat V, Bauer MW (2017). Singularity: Scientific containers for mobility of compute. PLoS ONE 12(5): e0177459.</sup>  
 <sup>**2.**  Koster, J. and S. Rahmann (2018). "Snakemake-a scalable bioinformatics workflow engine." Bioinformatics 34(20): 3600.</sup>  
