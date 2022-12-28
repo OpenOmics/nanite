@@ -2,7 +2,7 @@
 site_name: nanite
 site_author: Skyler Kuhn
 site_description: >-
-  An awesome Viral Nanopore Pipeline
+  An awesome Viral Oxford Nanopore Pipeline
 
 # Repository
 repo_name: OpenOmics/nanite
@@ -96,11 +96,13 @@ markdown_extensions:
 # Page Tree
 nav:
   - About: index.md
+  - Setup: setup.md
   - Commands: 
     - nanite run: usage/run.md
     - nanite unlock: usage/unlock.md
     - nanite install: usage/install.md
     - nanite cache: usage/cache.md
+  - Examples: examples.md
   - FAQ:
     - General Questions: faq/questions.md
   - License: license.md
