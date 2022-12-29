@@ -30,9 +30,11 @@ Before getting started, we highly recommend reading through the [usage](https://
 For more information about issues or trouble-shooting a problem, please checkout our [FAQ](https://openomics.github.io/nanite/faq/questions/) prior to [opening an issue on Github](https://github.com/OpenOmics/nanite/issues).
 
 ## Dependencies
-**Requires:** `singularity>=3.5`  `snakemake>=6.0`
+**Requires:** `singularity>=3.5`  `snakemake>=6.0`  `conda/mamba (optional)` 
 
-At the current moment, the pipeline uses a mixture of enviroment modules and docker images; however, this will be changing soon! In the very near future, the pipeline will only use docker images. With that being said, [snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) and [singularity](https://singularity.lbl.gov/all-releases) must be installed on the target system. Snakemake orchestrates the execution of each step in the pipeline. To guarantee the highest level of reproducibility, each step of the pipeline will rely on versioned images from [DockerHub](https://hub.docker.com/orgs/nciccbr/repositories). Snakemake uses singularity to pull these images onto the local filesystem prior to job execution, and as so, snakemake and singularity will be the only two dependencies in the future.
+[Snakemake](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) must be installed on the target system. Snakemake is a workflow manager that orchestrates each step of the pipeline. The second dependency, i.e [singularity](https://singularity.lbl.gov/all-releases) OR [conda/mamba](https://github.com/conda-forge/miniforge#mambaforge), handles the dowloading/installation of any remaining software dependencies. By default, the pipeline will utilize singularity to guarantee the highest level of reproducibility; however, the `--use-conda` option of the [run](https://openomics.github.io/nanite/usage/run/) sub command can be provided to  use conda/mamba instead of singularity. If possible, we recommend using singularity over conda for reproducibility; however, it is worth noting that singularity and conda produce identical results for this pipeline. 
+
+If you are running the pipeline on Windows, please use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). Singularity can be installed on WSL following these [instructions](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
 
 ## Installation
 Please clone this repository to your local filesystem using the following command:
@@ -47,6 +49,8 @@ module load snakemake singularity
 # Get usage information
 ./nanite -h
 ```
+
+For more detailed installation instructions, please see our [setup page](https://openomics.github.io/nanite/usage/setup/).
 
 ## Contribute 
 This site is a living document, created for and by members like you. nanite is maintained by the members of OpenOmics and is improved by continous feedback! We encourage you to contribute new content and make improvements to existing content via pull request to our [GitHub repository](https://github.com/OpenOmics/nanite).
