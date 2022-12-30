@@ -36,10 +36,35 @@ Welcome to nanite's documentation! This guide is the main source of documentatio
 
 The **`./nanite`** pipeline is composed several inter-related sub commands to setup and run the pipeline across different systems. Each of the available sub commands perform different functions: 
 
- * [<code>nanite <b>run</b></code>](usage/run.md): Run the nanite pipeline with your input files.
- * [<code>nanite <b>unlock</b></code>](usage/unlock.md): Unlocks a previous runs output directory.
- * [<code>nanite <b>install</b></code>](usage/install.md): Download reference files locally.
- * [<code>nanite <b>cache</b></code>](usage/cache.md): Cache software containers locally. 
+<section align="center" markdown="1" style="display: flex; flex-wrap: row wrap; justify-content: space-around;">
+
+!!! inline custom-grid-button ""
+
+    [<code style="font-size: 1em;">nanite <b>run</b></code>](usage/run.md)   
+    Run the nanite pipeline with your input files.
+
+!!! inline custom-grid-button ""
+
+    [<code style="font-size: 1em;">nanite <b>unlock</b></code>](usage/unlock.md)  
+    Unlocks a previous runs output directory.
+
+</section>
+
+<section align="center" markdown="1" style="display: flex; flex-wrap: row wrap; justify-content: space-around;">
+
+
+!!! inline custom-grid-button ""
+
+    [<code style="font-size: 1em;">nanite <b>install</b></code>](usage/install.md)  
+    Download remote reference files locally.
+
+
+!!! inline custom-grid-button ""
+
+    [<code style="font-size: 1em;">nanite <b>cache</b></code>](usage/cache.md)  
+    Cache remote software containers locally.  
+
+</section>
 
 **nanite** is a streamlined viral metagenomics pipeline to assemble, annotate, and classify microorganisms in enviromental samples. It relies on technologies like [Singularity<sup>1</sup>](https://singularity.lbl.gov/) to maintain the highest-level of reproducibility. The pipeline consists of a series of data processing and quality-control steps orchestrated by [Snakemake<sup>2</sup>](https://snakemake.readthedocs.io/en/stable/), a flexible and scalable workflow management system, to submit jobs to a cluster.
 
