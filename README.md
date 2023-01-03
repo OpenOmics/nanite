@@ -50,7 +50,7 @@ module load snakemake singularity
 ./nanite -h
 ```
 
-For more detailed installation instructions, please see our [setup page](https://openomics.github.io/nanite/usage/setup/).
+For more detailed installation instructions, please see our [setup page](https://openomics.github.io/nanite/setup/).
 
 ## Contribute 
 This site is a living document, created for and by members like you. nanite is maintained by the members of OpenOmics and is improved by continous feedback! We encourage you to contribute new content and make improvements to existing content via pull request to our [GitHub repository](https://github.com/OpenOmics/nanite).
