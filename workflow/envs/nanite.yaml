@@ -1,4 +1,4 @@
-name: qc
+name: nanite
 channels:
   - conda-forge
   - bioconda
