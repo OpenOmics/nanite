@@ -498,7 +498,7 @@ def parsed_arguments(name, description):
                                 below. 
                                   Example: --use-conda
           --conda-env-name CONDA_ENV_NAME
-                                Use an extisting conda environment. This option allows
+                                Use an existing conda environment. This option allows
                                 {2} to run with conda in an offline mode.  If you are 
                                 using conda without this option, the pipeline will build 
                                 a conda environment on the fly prior to the pipeline's 

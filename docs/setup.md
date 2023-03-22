@@ -68,6 +68,20 @@ This next step is only applicable for singularity users. If you are using conda/
 
 Please remember the path provided to the `--sif-cache` option above, you will need to provide this path to the `--sif-cache` option of the [run sub command](usage/run.md). For more information, please see the documentation for the [cache sub command](usage/install.md). 
 
+### Cache conda environment
+
+This next step is only applicable to conda/mamba users. If you are using singularity instead of conda/mamba, you can skip over this section. By default, when the `--use-conda` option is 
+provided, a conda environment will be built on the fly. Building a conda environment can be slow, and it make exeternal requests so you will need internet access. With that being said, it may make sense to create/cache the conda environment once and re-use it. To cache/create nanite's conda environment, please run the following command:  
+```bash
+# Create a conda/mamba env
+# called nanite, you only 
+# need to run this once 
+# on your computer/cluster
+mamba env create -f workflow/envs/nanite.yaml
+```
+
+Running the command above will create a named conda/mamba environment called `nanite`. Now you can provide `--conda-env-name nanite` to the [run sub command](usage/run.md). This will ensure conda/mamba is run in an offline-like mode where no external requests are made at runtime. It will use the local, named conda environment instead of building an environment on the fly.
+
 ## TLDR
 
 Here is everything you need to get quickly get started. This set of instructions assumes you have snakemake and (singularity or conda) already [installed on your target system](#dependencies), and that both are in your `$PATH`. 
@@ -75,8 +89,8 @@ Here is everything you need to get quickly get started. This set of instructions
 Following the example below, please replace `--input .tests/*.gz` with your input ONT FastQ files. If you are running the pipeline on Windows, please use the Windows Subsystem for Linux (WSL).
 
 !!! note "Quick Start"
-    === "Other system + offline mode"
-        These instructions are for users/admins setting up the pipeline to run ouside of Biowulf in an offline mode. The pipeline can be run in an offline mode for users that do not have internet access. This mode is useful for researchers running the pipeline _in the field_ on a local laptop. 
+    === "Other system + singularity offline mode"
+        These instructions are for users/admins setting up the pipeline to run ouside of Biowulf in an offline mode. The pipeline can be run in an offline mode for users that do not have internet access with singularity. This mode is useful for researchers running the pipeline _in the field_ on a local laptop running linux. 
         
         In this example, we will cache/download remote resources in our `$HOME` directory, but please feel free to point to any other location on you computer or target system. You will need about 4 GB of free diskspace for the download.
         ```bash
@@ -102,8 +116,8 @@ Following the example below, please replace `--input .tests/*.gz` with your inpu
                    --sif-cache $HOME/SIFs --mode local
         ```
 
-    === "Other system + Conda"
-        These instructions are for users/admins setting up the pipeline outside of Biowulf. Please note at the current moment the use of conda requires internet access. If you wish to run the pipeline in an offline mode, please use singularity and [cache the pipeline's software containers](#cache-software-containers). 
+    === "Other system + conda offline mode"
+        These instructions are for users/admins setting up the pipeline outside of Biowulf. The pipeline can be run in an offline mode for users that do not have internet access with conda/mamba. This mode is useful for researchers running the pipeline _in the field_ on a local laptop running linux, macOS, or [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). 
         
         In this example, we will download the resource bundle in our `$HOME` directory, but please feel free to point to any other location on you computer or target system. You will need about 4 GB of free diskspace for the download.
         ```bash
@@ -115,15 +129,21 @@ Following the example below, please replace `--input .tests/*.gz` with your inpu
         ./nanite -h
         # Download resource bundle
         ./nanite install --ref-path $HOME/refs --force --threads 4
+        # Cache conda environment,
+        # creates a local conda env 
+        # called nanite
+        mamba env create -f workflow/envs/nanite.yaml
         # Dry run nanite pipeline
         ./nanite run --input .tests/*.gz --output tmp_01/ \
                    --resource-bundle $HOME/refs/nanite \
-                   --mode local --dry-run
+                   --mode local --conda-env-name nanite \
+                   --dry-run
         # Run nanite pipeline
-        # with conda/mamba
+        # with conda/mamba in
+        # offline-mode
         ./nanite run --input .tests/*.gz --output tmp_01/ \
                    --resource-bundle $HOME/refs/nanite \
-                   --mode local
+                   --mode local --conda-env-name nanite
         ```
 
     === "Biowulf"

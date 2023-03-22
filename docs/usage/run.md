@@ -14,6 +14,7 @@ $ nanite run [--help] \
       [--sif-cache SIF_CACHE] [--singularity-cache SINGULARITY_CACHE] \
       [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] \
       [--resource-bundle RESOURCE_BUNDLE] [--use-conda] \
+      [--conda-env-name CONDA_ENV_NAME] \
       [--quality-filter QUALITY_FILTER] \
       --input INPUT [INPUT ...] \
       --output OUTPUT
@@ -159,9 +160,25 @@ Each of the following arguments are optional, and do not need to be provided.
 > **Use Conda/mamba instead of Singularity.**  
 > *type: boolean flag*
 > 
-> Use Conda/Mamba instead of Singularity. By default, the pipeline uses singularity for handling required software dependencies. This option overrides that behavior, and it will use Conda or mamba instead of Singularity. The use of Singuarity and Conda are mutually exclusive. Please note that conda or mamba must be in your $PATH prior to running the pipeline.
+> Use Conda/Mamba instead of Singularity. By default, the pipeline uses singularity for handling required software dependencies. This option overrides that behavior, and it will use Conda/mamba instead of Singularity. The use of Singuarity and Conda are mutually exclusive. Please note that conda and mamba must be in your $PATH prior to running the pipeline. This option will build a conda environment on the fly prior to the pipeline's execution. As so, this step requires internet access. To run nanite in an offline mode with conda, please see the `--conda-env-name` option below. 
 > 
 > ***Example:*** `--use-conda`
+
+---  
+  `--conda-env-name CONDA_ENV_NAME`   
+> **Use an existing conda environment.**  
+> *type: str*
+> 
+> Use an existing conda environment. This option allows nanite to run with conda in an offline mode. If you are using conda without this option, the pipeline will build a conda environment on the fly prior to the its execution. Building a conda environment can sometimes be slow, as it downloads dependencies from the internet, so it may make sense to build it once and re-use it. This will also allow you to use conda/mamba in an offline mode. If you  have already built a named conda environment with the supplied yaml file, then you can directly use it with this option. Please provide the name of the conda environment that was specifically built for the nanite pipeline. 
+>
+> To create a reusable conda/mamba environment with the name `nanite`, please run the following mamba command: 
+> ```bash
+> # Creates a reusable conda
+> # environment called nanite
+> mamba env create -f workflow/envs/nanite.yaml.
+> ```
+
+> ***Example:*** `--conda-env-name nanite`
 
 ### 2.4 Miscellaneous options  
 Each of the following arguments are optional, and do not need to be provided. 
