@@ -7,3 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0-beta] - 2022-12-15
 ### Start
   - Created [scaffold](https://github.com/OpenOmics/nanite) for building a snakemake pipeline
+
+## [0.5.0] - 2023-03-22
+### Feature
+  - Adding offline conda mode: uses an extisting, named conda environment instead of building the conda env on the fly.
