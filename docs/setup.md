@@ -68,10 +68,10 @@ This next step is only applicable for singularity users. If you are using conda/
 
 Please remember the path provided to the `--sif-cache` option above, you will need to provide this path to the `--sif-cache` option of the [run sub command](usage/run.md). For more information, please see the documentation for the [cache sub command](usage/install.md). 
 
-### Cache conda environment
+#### Cache conda environment
 
 This next step is only applicable to conda/mamba users. If you are using singularity instead of conda/mamba, you can skip over this section. By default, when the `--use-conda` option is 
-provided, a conda environment will be built on the fly. Building a conda environment can be slow, and it make exeternal requests so you will need internet access. With that being said, it may make sense to create/cache the conda environment once and re-use it. To cache/create nanite's conda environment, please run the following command:  
+provided, a conda environment will be built on the fly. Building a conda environment can be slow, and it also makes exeternal requests so you will need internet access. With that being said, it may make sense to create/cache the conda environment once and re-use it. To cache/create nanite's conda environment, please run the following command:  
 ```bash
 # Create a conda/mamba env
 # called nanite, you only 
@@ -80,7 +80,7 @@ provided, a conda environment will be built on the fly. Building a conda environ
 mamba env create -f workflow/envs/nanite.yaml
 ```
 
-Running the command above will create a named conda/mamba environment called `nanite`. Now you can provide `--conda-env-name nanite` to the [run sub command](usage/run.md). This will ensure conda/mamba is run in an offline-like mode where no external requests are made at runtime. It will use the local, named conda environment instead of building an environment on the fly.
+Running the command above will create a named conda/mamba environment called `nanite`. Now you can provide `--conda-env-name nanite` to the [run sub command](usage/run.md). This will ensure conda/mamba is run in an offline-like mode where no external requests are made at runtime. It will use the local, named conda environment instead of building a new environment on the fly.
 
 ## TLDR
 
