@@ -376,6 +376,7 @@ def parsed_arguments(name, description):
                 [--sif-cache SIF_CACHE] [--singularity-cache SINGULARITY_CACHE] \\
                 [--silent] [--threads THREADS] [--tmp-dir TMP_DIR] \\
                 [--resource-bundle RESOURCE_BUNDLE] [--use-conda] \\
+                [--conda-env-name CONDA_ENV_NAME] \\
                 [--quality-filter QUALITY_FILTER] \\
                 --input INPUT [INPUT ...] \\
                 --output OUTPUT
@@ -490,9 +491,28 @@ def parsed_arguments(name, description):
                                 software dependencies. This option overrides that be-
                                 havior, and it will use Conda or mamba instead. Please
                                 note that conda or mamba must be in your $PATH prior 
-                                to running the pipeline.
+                                to running the pipeline. This option will build an env 
+                                on the fly prior to the pipeline's execution. As so, 
+                                this step requires internet access. To run {2} in 
+                                an offline mode with conda, please see the option
+                                below. 
                                   Example: --use-conda
-        
+          --conda-env-name CONDA_ENV_NAME
+                                Use an extisting conda environment. This option allows
+                                {2} to run with conda in an offline mode.  If you are 
+                                using conda without this option, the pipeline will build 
+                                a conda environment on the fly prior to the pipeline's 
+                                execution. Building a conda environment can sometimes be 
+                                slow as it downloads dependencies from the internet, so 
+                                it may make sense to build it once and re-use it. If you 
+                                have already built a named conda environment with the 
+                                supplied yaml file, then you can directly use it with 
+                                this option. Please provide the name of the conda env 
+                                that was specifically built for the {2} pipeline. To 
+                                create a reusable conda/mamba environment with the 
+                                name '{2}', please run the following mamba command:
+                                'mamba env create -f workflow/envs/nanite.yaml'.
+                                  Example: --conda-env-name nanite
         {3}{4}Misc Options:{5}
           -h, --help            Show usage information, help message, and exit.
                                   Example: --help
@@ -668,12 +688,23 @@ def parsed_arguments(name, description):
         help = argparse.SUPPRESS
     )
 
-    # Use Conda instead of singularity
+    # Use Conda instead of singularity,
+    # will build an env on the fly
     subparser_run.add_argument(
         '--use-conda',
         action = 'store_true',
         required = False,
         default = False,
+        help = argparse.SUPPRESS
+    )
+    
+    # Use an existing conda env,
+    # runs conda in offline mode
+    subparser_run.add_argument(
+        '--conda-env-name',
+        type = str,
+        required = False,
+        default = '',
         help = argparse.SUPPRESS
     )
     

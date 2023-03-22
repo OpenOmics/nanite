@@ -33,8 +33,24 @@ use_singularity = True
 use_conda =  str_bool(
      config['options']['use_conda']
 ) # default: False
+
+# Use an extisting, named conda env
+conda_env_name = config['options']['conda_env_name']                # default: ''
+conda_yaml_or_named_env = join(workpath, config['conda']['nanite']) # default: yaml for building
+if conda_env_name:
+    # Setup so user does not have
+    # to provide the --use-conda 
+    # option with --conda-env-name,
+    # assumes if they provide the 
+    # --conda-env-name option they
+    # obviously want to use conda 
+    # instead of singularity, allows
+    # for backwards compatiability
+    use_conda = True
+    conda_yaml_or_named_env = conda_env_name    # Use an existing, named conda environment
+
 # Use Singularity
-if use_conda:
+if use_conda or conda_env_name:
     # Conda and Singularity 
     # are mutually exclusive 
     use_singularity = False

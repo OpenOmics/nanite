@@ -15,7 +15,7 @@ rule kronatools:
     params:
         rname  = 'kronatools',
         krona_ref  = config['references']['kronatools'],
-    conda: depending(join(workpath, config['conda']['nanite']), use_conda)
+    conda: depending(conda_yaml_or_named_env, use_conda)
     container: depending(config['images']['nanite'], use_singularity)
     shell: 
         """

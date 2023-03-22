@@ -14,7 +14,7 @@ rule minimap2:
     params:
         rname  = 'minimap2',
         viral_fa  = config['references']['ncbi_viral_fa'],
-    conda: depending(join(workpath, config['conda']['nanite']), use_conda)
+    conda: depending(conda_yaml_or_named_env, use_conda)
     container: depending(config['images']['nanite'], use_singularity)
     shell: 
         """
