@@ -137,13 +137,14 @@ Following the example below, please replace `--input .tests/*.gz` with your inpu
         ./nanite run --input .tests/*.gz --output tmp_01/ \
                    --resource-bundle $HOME/refs/nanite \
                    --mode local --conda-env-name nanite \
-                   --dry-run
+                   --use-conda --dry-run
         # Run nanite pipeline
         # with conda/mamba in
         # offline-mode
         ./nanite run --input .tests/*.gz --output tmp_01/ \
                    --resource-bundle $HOME/refs/nanite \
-                   --mode local --conda-env-name nanite
+                   --mode local --conda-env-name nanite \
+                   --use-conda
         ```
 
     === "Biowulf"
