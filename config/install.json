@@ -12,6 +12,27 @@
             "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-09": "d10afd5cdfe87804d3866d89bd439000",
             "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-10": "cb0709a8978845738a3b82b97c051161",
             "https://hpc.nih.gov/~OpenOmics/nanite/v1/metavirs_v1.0.0_chunk-11": "47d0249931077f4f9534c1e37777dae0"
+        },
+        "viralflye_pfam_hmm": {
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-01": "078a96e68b93ab0fcfe4052975a8b184",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-02": "a8c6d022310a4854249159c6d7e2a46b",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-03": "b5b42beec357d65a869cb63221b8a06d",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-04": "4f449ad55a0fe6b39a4782fc2beb8eb6",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-05": "92180cafa16cc8de5114388fb7219ecd",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-06": "ae4c1c1b8fc8022b5acf2597b4a5a959",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-07": "e9a9609a1d6b53e7af09a99415eac432",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-08": "9bf4df4feb3c2aa15fd99b5a39ebf91f",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-09": "1dc2cfe000ec2e5ddd1745024d181ca5",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-10": "ffe5434858c75c6ece4408b6ab38a47e",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-11": "c6f0964bbafc19ca37245e7c20adfddf",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-12": "0ff7b82b0fadfe242fe89768e57adde9",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-13": "1ed3f21ae25873272c65fc5fce5e7958",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-14": "a0d1bde3e7c856a50856de1b3f27e0c7",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-15": "635f62319c10e13d5f2e5d70271fa632",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-16": "38452ec9fcbec81802641021378c3b5d",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-17": "160932a2aafe491973708d034cf6fee5",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-18": "981a3df4390cb83e7447780d2a6b1b0a",
+            "https://hpc.nih.gov/~OpenOmics/nanite/v1/viralFlye/nanite_viralFlye_chunk-19": "1bce8f04f17f5f8dd6db8d83837518ed"
         }
     }
 }
