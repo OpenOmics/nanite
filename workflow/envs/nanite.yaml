@@ -4,8 +4,29 @@ channels:
   - bioconda
   - defaults
   - r
+  - mikeraiko
 dependencies:
  - nanofilt=2.8.0
  - nanoplot=1.38.1
  - minimap2=2.24
  - krona=2.8.1
+ # ViralFyle dependencies, please see the
+ # following link for more information:
+ # https://github.com/Dmitry-Antipov/viralFlye/blob/master/install.sh
+ - bcftools
+ - blast
+ - bwa
+ - freebayes
+ - minced
+ - prodigal
+ - python>=3.6
+ - biopython
+ - numpy
+ - pysam
+ - scipy
+ - samtools
+ - seqtk
+ - tabix
+ - vcflib
+ - viralcomplete
+ - viralverify
