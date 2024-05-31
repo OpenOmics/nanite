@@ -378,6 +378,7 @@ def parsed_arguments(name, description):
                 [--resource-bundle RESOURCE_BUNDLE] [--use-conda] \\
                 [--conda-env-name CONDA_ENV_NAME] \\
                 [--quality-filter QUALITY_FILTER] \\
+                [--assemble-reads] \\
                 --input INPUT [INPUT ...] \\
                 --output OUTPUT
 
@@ -408,6 +409,16 @@ def parsed_arguments(name, description):
                                 Filter reads on a minimum average quality score. The 
                                 default average minimum quality filter is set to 8.
                                   Example: --quality-filter 8
+        
+          --assemble-reads      
+                                Assemble reads and recover high-quality viral genomes
+                                using Flye and viralFlye. This option will assemble
+                                reads using Flye while viralFlye is used to recover
+                                viral genomes using the assembly from Flye. By default,
+                                this option is not enabled. If you would like to enable
+                                assemble reads and recover any pontential viral genomes,
+                                please provide this option.
+                                  Example: --assemble-reads
 
         {3}{4}Orchestration options:{5}
           --mode {{slurm,local}}  
@@ -582,6 +593,17 @@ def parsed_arguments(name, description):
         type = int,
         required = False,
         default = 8,
+        help = argparse.SUPPRESS
+    )
+
+
+    # Assemble and recover reads
+    # using Flye and viralFlye
+    subparser_run.add_argument(
+        '--assemble-reads',
+        action = 'store_true',
+        required = False,
+        default = False,
         help = argparse.SUPPRESS
     )
 
