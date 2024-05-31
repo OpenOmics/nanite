@@ -16,6 +16,7 @@ $ nanite run [--help] \
       [--resource-bundle RESOURCE_BUNDLE] [--use-conda] \
       [--conda-env-name CONDA_ENV_NAME] \
       [--quality-filter QUALITY_FILTER] \
+      [--assemble-reads] \
       --input INPUT [INPUT ...] \
       --output OUTPUT
 ```
@@ -59,6 +60,14 @@ Each of the following arguments are optional, and do not need to be provided.
 > This option filters reads on a minimum average quality score. Any reads with an average minimum quality score less than this threshold will be removed. The default average minimum quality filter is set to 8.
 > 
 > ***Example:*** `--quality-filter 10`
+
+  `--assemble-reads`  
+> **Assemble reads.**  
+> *type: boolean flag*
+> 
+> Assemble reads and recover high-quality viral genomes using Flye and viralFlye. This option will assemble reads using Flye while viralFlye is used to recover viral genomes using Flye's output. By default, this option is not enabled, meaning it will not perform any assemble steps. If you would like to enable assemble reads and recover any pontential viral genomes, please provide this option. It is worth noting that assembling reads has the potential to use a significant amount of computational resources, specifically high memory usage. Internal testing has shown that the pipeline can use up to 8-16GB of memory when assembling reads into repeat graphs. If you provide this option, please ensure that you have enough memory available on the host or local machine before proceeding.  
+> 
+> ***Example:*** `--assemble-reads`
 
 ### 2.3 Orchestration options
 
