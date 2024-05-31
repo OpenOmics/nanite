@@ -26,6 +26,11 @@ samples = list(config['barcodes'].keys())
 quality_filter = int(
     config['options']['quality_filter']
 ) # Default: 8
+# Assemble reads and recover viral genomes
+# with Flye and viralFlye
+assemble_reads = str_bool(
+    config['options']['assemble_reads']
+) # Default: False
 
 # Determines if Conda or Singularity
 # are used for software dependencies
@@ -83,6 +88,19 @@ rule all:
         expand(
             join(workpath, "{name}", "reports", "{name}_classification.html"),
             name=samples
+        ),
+        # Assemble reads and recover viral genomes
+        # using Flye and viralFlye,
+        # @import from `rule viralflye` in rules/assemble.smk
+        expand(
+            join(workpath, "{name}", "assembly", "bams", "{name}_viralflye.sam"),
+            name=provided(samples, assemble_reads)
+        ),
+        # Create a Krona report of the recovered viralFlye genomes,
+        # @import from `rule viralflye_report` in rules/assemble.smk
+        expand(
+            join(workpath, "{name}", "assembly", "reports", "{name}_viralflye_classification.html"),
+            name=provided(samples, assemble_reads)
         )
 
 
@@ -91,3 +109,4 @@ include: join("rules", "common.smk")
 include: join("rules", "trim.smk")
 include: join("rules", "map.smk")
 include: join("rules", "report.smk")
+include: join("rules", "assemble.smk")
