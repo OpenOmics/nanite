@@ -1,5 +1,5 @@
 {
     "images": {
-        "nanite": "docker://skchronicles/nanite:v0.1.0"
+        "nanite": "docker://skchronicles/nanite:v0.2.0"
     }
 }

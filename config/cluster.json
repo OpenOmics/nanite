@@ -5,5 +5,9 @@
         "partition": "norm",
         "gres": "lscratch:32",
         "time": "0-04:00:00"
+    },
+    "viralflye": {
+        "threads": "4",
+        "mem": "32g"
     }
 }
