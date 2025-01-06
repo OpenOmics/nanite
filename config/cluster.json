@@ -8,6 +8,7 @@
     },
     "viralflye": {
         "threads": "4",
-        "mem": "32g"
+        "mem": "32g",
+        "time": "1-18:00:00"
     }
 }
