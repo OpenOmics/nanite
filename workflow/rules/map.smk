@@ -18,12 +18,14 @@ rule minimap2:
     container: depending(config['images']['nanite'], use_singularity)
     shell: 
         """
-        # Align against entire NCBI Viral database 
+        # Align against entire NCBI Viral database,
+        # remove chimeric/supplementary reads
         minimap2 \\
             -ax map-ont \\
             --secondary=no \\
             --sam-hit-only \\
             {params.viral_fa} \\
             {input.fq} \\
+            | samtools view -h -F 2048,2064 \\
         > {output.sam}
         """
