@@ -174,6 +174,7 @@ def run(sub_args):
         logger = logfh,
         additional_bind_paths = ",".join(bindpaths),
         tmp_dir = sub_args.tmp_dir, 
+        use_conda = sub_args.use_conda
     )
     
     # Step 6. Wait for subprocess to complete,

@@ -4,7 +4,7 @@ set -eu
 function usage() { cat << EOF
 run.sh: submits the master job of pipeline to the job scheduler.
 USAGE:
-  run.sh <MODE> [-h] [-c CACHE] \\
+  run.sh <MODE> [-h] [-c CACHE] [-u USE_CONDA] \\
           -o OUTDIR \\
           -j MASTER_JOB_NAME \\
           -b SINGULARITY_BIND_PATHS \\
@@ -67,6 +67,9 @@ OPTIONS:
                                 the path will default to the current working
                                 directory of this script.
                                 [Default: $(dirname  "$0")/.singularity/]
+  -u, --use-conda [Type: Bool] Should conda be used over singularity.
+                               Valid values: true, false
+                                [Default: true]
   -h, --help     [Type: Bool]  Displays usage and help information.
 Example:
   $ runner slurm -h
@@ -97,6 +100,7 @@ function parser() {
       -t  | --tmp-dir) provided "$key" "${2:-}"; Arguments["t"]="$2"; shift; shift;;
       -o  | --outdir)  provided "$key" "${2:-}"; Arguments["o"]="$2"; shift; shift;;
       -c  | --cache)  provided "$key" "${2:-}"; Arguments["c"]="$2"; shift; shift;;
+      -u  | --use-conda) provided "$key" "${2:-}"; Arguments["u"]="$2"; shift; shift;;
       -*  | --*) err "Error: Failed to parse unsupported argument: '${key}'."; usage && exit 1;;
       *) err "Error: Failed to parse unrecognized argument: '${key}'. Do any of your inputs have spaces?"; usage && exit 1;;
     esac
@@ -159,6 +163,7 @@ function submit(){
   # INPUT $4 = Singularity Bind paths
   # INPUT $5 = Singularity cache directory
   # INPUT $6 = Temporary directory for output files
+  # INPUT $7 = Use conda (true/false)
 
   # Check if singularity and snakemake are in $PATH
   # If not, try to module load singularity as a last resort
@@ -209,6 +214,12 @@ function submit(){
           if [[ ${6#\'} != /lscratch* ]]; then
             CLUSTER_OPTS="sbatch --cpus-per-task {cluster.threads} -p {cluster.partition} -t {cluster.time} --mem {cluster.mem} --job-name={params.rname} -e $SLURM_DIR/slurm-%j_{params.rname}.out -o $SLURM_DIR/slurm-%j_{params.rname}.out"
           fi
+          # Should conda or singularity be used,
+          # option is mutally exclusive
+          use_conda=""
+          if [[ $7 == "true" ]]; then
+              use_conda="--use-conda"
+          fi
           # Create sbacth script to build index
     cat << EOF > kickoff.sh
 #!/usr/bin/env bash
@@ -222,8 +233,7 @@ function submit(){
 #SBATCH --error "$3/logfiles/snakemake.log"
 set -euo pipefail
 # Main process of pipeline
-snakemake --latency-wait 120 -s "$3/workflow/Snakefile" -d "$3" \\
-  --use-conda \\
+snakemake --latency-wait 120 -s "$3/workflow/Snakefile" -d "$3" ${use_conda} \\
   --use-singularity --singularity-args "'-B $4'" \\
   --use-envmodules --configfile="$3/config.json" \\
   --printshellcmds --cluster-config "$3/config/cluster.json" \\
@@ -273,7 +283,8 @@ function main(){
   # If singularity cache not provided, default to ${outdir}/.singularity
   cache="${Arguments[o]}/.singularity"
   Arguments[c]="${Arguments[c]:-$cache}"
-  Arguments[c]="${Arguments[c]%/}" # clean outdir path (remove trailing '/')
+  Arguments[c]="${Arguments[c]%/}"       # clean outdir path (remove trailing '/')
+  Arguments[u]="${Arguments[u]:-true}"   # If not provided, use singularity
 
   # Print pipeline metadata prior to running
   echo -e "[$(date)] Running pipeline with the following parameters:"
@@ -281,7 +292,7 @@ function main(){
 
   # Run pipeline and submit jobs to cluster using the defined executor
   mkdir -p "${Arguments[o]}/logfiles/"
-  job_id=$(submit "${Arguments[e]}" "${Arguments[j]}" "${Arguments[o]}" "${Arguments[b]}" "${Arguments[c]}" "${Arguments[t]}")
+  job_id=$(submit "${Arguments[e]}" "${Arguments[j]}" "${Arguments[o]}" "${Arguments[b]}" "${Arguments[c]}" "${Arguments[t]}" "${Arguments[u]}")
   echo -e "[$(date)] Pipeline submitted to cluster.\nMaster Job ID: $job_id"
   echo "${job_id}" > "${Arguments[o]}/logfiles/mjobid.log"
 
